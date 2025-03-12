@@ -1,322 +1,467 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Setup Instructions for Cursor AI</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 20px;
-            background-color: #f9f9f9;
-            color: #333;
-            position: relative;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        h1, h2 {
-            color: #0056b3;
-        }
-        code, pre {
-            background-color: #e8e8e8;
-            padding: 10px;
-            border-radius: 4px;
-            font-family: 'Courier New', Courier, monospace;
-            overflow-x: auto;
-        }
-        p {
-            margin-bottom: 1em;
-        }
-        ul {
-            list-style-type: disc;
-            margin-left: 20px;
-        }
-        li {
-            margin-bottom: 0.5em;
-        }
-        .note {
-            background-color: #fff3cd;
-            border-left: 4px solid #ffeeba;
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 1em;
-        }
-        .logo {
-            max-width: 120px;
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            opacity: 0.9;
-            z-index: 1000;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 
-                0 2px 4px rgba(0, 0, 0, 0.1),
-                0 4px 8px rgba(0, 0, 0, 0.05),
-                inset 0 -2px 5px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(5px);
-            transform: perspective(1000px) rotateX(5deg);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .logo:hover {
-            transform: perspective(1000px) rotateX(0deg) translateY(-5px);
-            opacity: 1;
-            box-shadow: 
-                0 8px 16px rgba(0, 0, 0, 0.1),
-                0 16px 32px rgba(0, 0, 0, 0.05),
-                inset 0 -2px 5px rgba(0, 0, 0, 0.1);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-        .background-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, #f3ec78, #af4261);
-            background-size: 400% 400%;
-            z-index: -1;
-            animation: gradient 15s ease infinite;
-        }
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-            height: 0;
-            overflow: hidden;
-            max-width: 100%;
-            margin-top: 20px;
-        }
-        .video-container video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        .directory-container {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin: 20px 0;
-            transition: transform 0.3s ease;
-            overflow-x: auto;
-        }
-        .directory-container:hover {
-            transform: translateY(-5px);
-        }
-        .folder-icon::before {
-            content: "📁";
-            margin-right: 5px;
-        }
-        .file-icon::before {
-            content: "📄";
-            margin-right: 5px;
-        }
-        .media-icon::before {
-            content: "🎥";
-            margin-right: 5px;
-        }
-        .image-icon::before {
-            content: "🖼️";
-            margin-right: 5px;
-        }
-        .description {
-            font-style: italic;
-            color: #666;
-            margin-top: 10px;
-            padding-left: 20px;
-        }
-        @keyframes highlight {
-            0% { background-color: transparent; }
-            50% { background-color: rgba(0, 86, 179, 0.1); }
-            100% { background-color: transparent; }
-        }
-        .directory-container:hover pre {
-            animation: highlight 2s ease infinite;
-        }
-        .container {
-            width: 100%;
-            padding-right: 15px;
-            padding-left: 15px;
-            margin-right: auto;
-            margin-left: auto;
-        }
-        .content {
-            position: relative;
-            width: 100%;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        @media screen and (max-width: 768px) {
-            body {
-                margin: 10px;
-                padding: 10px;
-            }
-            .logo {
-                position: relative;
-                display: block;
-                margin: 0 auto 20px;
-                top: 0;
-                right: 0;
-                max-width: 100px;
-                padding: 8px;
-                background: none;
-                box-shadow: none;
-            }
-            h1 {
-                text-align: center;
-                margin-top: 20px;
-            }
-            pre {
-                font-size: 14px;
-            }
-            .directory-container {
-                padding: 10px;
-            }
-            .description {
-                padding-left: 10px;
-            }
-            .content {
-                padding: 15px;
-                margin-top: 60px;
-            }
-        }
-        @media screen and (max-width: 480px) {
-            pre {
-                font-size: 12px;
-            }
-            .note {
-                padding: 8px;
-            }
-            h1 {
-                font-size: 24px;
-            }
-            h2 {
-                font-size: 20px;
-            }
-            .logo {
-                max-width: 80px;
-                margin: 10px auto;
-            }
-        }
-        pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            overflow-x: auto;
-            max-width: 100%;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="background-animation"></div>
-        <img src="FISA.png" alt="FISA Logo" class="logo">
-        <div class="content">
-            <h1>Setup Instructions for Cursor AI</h1>
-            <p>Follow these steps to set up and run the Cursor AI scripts for the first time on your macOS system.</p>
+#!/bin/bash
 
-            <h2>Step 1: Open Terminal</h2>
-            <p>Open the Terminal application on your macOS using one of these methods:</p>
-            <ul>
-                <li>Navigate to <code>Applications > Utilities > Terminal</code></li>
-                <li>Use Spotlight Search (⌘ + Space) and type "Terminal"</li>
-            </ul>
+# Colors for output
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+BLUE='\033[0;34m'
+SILVER='\033[0;37m'
+YELLOW='\033[1;33m'
+ORANGE='\033[0;33m'
 
-            <h2>Step 2: Navigate to the Script Directory</h2>
-            <p>You'll need to navigate to where your scripts are located. Here's how:</p>
+# Configuration
+PACKAGE_VERSION="0.44.11"
+CONFIG_DIR="$HOME/.cursor-ai"
+LOG_FILE="$CONFIG_DIR/cursor.log"
+
+# Create config directory and log file
+mkdir -p "$CONFIG_DIR"
+touch "$LOG_FILE"
+
+# Logging function
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$LOG_FILE"
+}
+
+# Clear screen with platform check
+clear_screen() {
+    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
+        cmd.exe /c cls
+    else
+        clear
+    fi
+}
+
+# Print banner function
+print_banner() {
+    clear_screen
+    echo -e "\n${SILVER}███████╗${YELLOW}██╗${ORANGE}███████╗ █████╗ ███╗   ███╗██╗   ██╗"
+    echo -e "${SILVER}██╔════╝${YELLOW}██║${ORANGE}██╔════╝██╔══██╗████╗ ████║╚██╗ ██╔╝"
+    echo -e "${SILVER}█████╗  ${YELLOW}██║${ORANGE}███████╗███████║██╔████╔██║ ╚████╔╝"
+    echo -e "${SILVER}██╔══╝  ${YELLOW}██║${ORANGE}╚════██║██╔══██║██║╚██╔╝██║  ╚██╔╝"
+    echo -e "${SILVER}██║     ${YELLOW}██║${ORANGE}███████║██║  ██║██║ ╚═╝ ██║   ██║"
+    echo -e "${SILVER}╚═╝     ${YELLOW}╚═╝${ORANGE}╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝${NC}\n"
+}
+
+# Show menu function
+show_menu() {
+    echo -e "\n${SILVER}Available Options:${NC}\n"
+    
+    echo -e "  ${GREEN}[A]${NC} Reset Cursor AI          ${SILVER}Complete reset and fresh installation${NC}"
+    echo -e "  ${YELLOW}[C]${NC} System Requirements      ${SILVER}Check if your system meets requirements${NC}"
+    echo -e "  ${ORANGE}[D]${NC} License Information     ${SILVER}View licensing details and requirements${NC}"
+    echo -e "  ${BLUE}[E]${NC} Post-Install Steps      ${SILVER}View steps to complete after installation${NC}"
+    echo -e "  ${RED}[Q]${NC} Quit                    ${SILVER}Exit the installation guide${NC}\n"
+    
+    echo -e "${SILVER}Select an option [${GREEN}A${NC}/${YELLOW}C${NC}/${ORANGE}D${NC}/${BLUE}E${NC}/${RED}Q${NC}]: ${NC}"
+}
+
+# Show license info
+show_license_info() {
+    clear_screen
+    print_banner
+    echo -e "\n${BLUE}License Requirements${NC}"
+    echo -e "${BLUE}──────────────────${NC}"
+    echo -e "\n• Sign Up again using NEW Gmail Account, temporary mail may not always work. You can purchase from FISAMY Shopee Store"
+    echo -e "• If there Trial Limit , you can revisit this Terminal and start again the process"
+    echo -e "• Sign Up again using NEW Gmail Account, temporary mail may not always work. You can purchase from FISAMY Shopee Store"
+    echo -e "\n${SILVER}Press Enter to return to main menu...${NC}"
+    read
+}
+
+# Show post-installation steps
+show_post_install_steps() {
+    clear_screen
+    print_banner
+    POST_INSTALL
+    echo -e "\n${SILVER}Press Enter to return to main menu...${NC}"
+    read
+}
+
+# Main menu loop
+main_menu() {
+    while true; do
+        clear_screen
+        print_banner
+        show_menu
+        
+        read -n 1 -r option
+        echo ""
+        
+        case $option in
+            [Aa])
+                clear_screen
+                print_banner
+                check_system
+                uninstall_cursor
+                install_cursor
+                run_id_modifier
+                POST_INSTALL
+                echo -e "\n${SILVER}Press Enter to return to main menu...${NC}"
+                read
+                ;;
+            [Cc])
+                clear_screen
+                print_banner
+                check_system
+                check_requirements
+                echo -e "\n${SILVER}Press Enter to return to main menu...${NC}"
+                read
+                ;;
+            [Dd])
+                show_license_info
+                ;;
+            [Ee])
+                show_post_install_steps
+                ;;
+            [Qq])
+                clear_screen
+                echo -e "${BLUE}╔══════════════════════════════════════╗${NC}"
+                echo -e "${BLUE}║ Thank you for using Cursor AI Reset! ║${NC}"
+                echo -e "${BLUE}╚══════════════════════════════════════╝${NC}"
+                exit 0
+                ;;
+            *)
+                echo -e "${RED}Invalid option. Please try again.${NC}"
+                sleep 2
+                ;;
+        esac
+    done
+}
+
+# Package information
+PACKAGE_NAME="cursor-ai"
+PACKAGE_VERSION="0.44.11"
+PACKAGE_DESCRIPTION="Cursor AI Development Environment"
+PACKAGE_MAINTAINER="Fisamy Support <support@fisamy.work>"
+PACKAGE_HOMEPAGE="https://fisamy.rhinopal.top/"
+PACKAGE_DEPENDS="curl, unzip, bc"
+
+# Installation directories
+if [[ "$EUID" -eq 0 ]]; then
+    INSTALL_DIR="/opt/cursor-ai"
+    BIN_DIR="/usr/local/bin"
+else
+    INSTALL_DIR="$HOME/.local/opt/cursor-ai"
+    BIN_DIR="$HOME/.local/bin"
+    mkdir -p "$INSTALL_DIR" "$BIN_DIR"
+fi
+
+# Check OS type and architecture
+check_system() {
+    echo -e "\n${BLUE}╔══════════════════════════════╗${NC}"
+    echo -e "${BLUE}║   System Requirements Check   ║${NC}"
+    echo -e "${BLUE}╚══════════════════════════════╝${NC}"
+    
+    ARCH=$(uname -m)
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        echo -e "\n🍎 ${GREEN}Detected macOS system${NC}"
+        PLATFORM="mac"
+    elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        echo -e "\n🐧 ${GREEN}Detected Linux system${NC}"
+        PLATFORM="linux"
+    elif [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
+        echo -e "\n🪟 ${GREEN}Detected Windows system${NC}"
+        PLATFORM="windows"
+    else
+        echo -e "\n❌ ${RED}Unsupported operating system${NC}"
+        exit 1
+    fi
+
+    # Architecture check
+    if [[ "$ARCH" != "x86_64" && "$ARCH" != "arm64" ]]; then
+        echo -e "\n❌ ${RED}Unsupported architecture: $ARCH${NC}"
+        exit 1
+    fi
+}
+
+# System requirements check
+check_requirements() {
+    echo -e "\n${BLUE}╔════════════════════════════════════════════════════════════════════════════╗"
+    echo -e "║                           System Requirements Check                            ║"
+    echo -e "╚════════════════════════════════════════════════════════════════════════════╝${NC}\n"
+
+    echo -e "${SILVER}Checking system specifications...${NC}\n"
+    
+    if [[ "$PLATFORM" == "windows" ]]; then
+        # Windows checks
+        TOTAL_RAM=$(powershell -command "Get-CimInstance Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum | Select-Object -ExpandProperty Sum" 2>/dev/null | awk '{print $1/1024/1024/1024}')
+        FREE_SPACE=$(powershell -command "Get-PSDrive C | Select-Object -ExpandProperty Free" 2>/dev/null | awk '{print $1/1024/1024/1024}')
+    elif [[ "$PLATFORM" == "mac" ]]; then
+        # macOS checks
+        TOTAL_RAM=$(sysctl hw.memsize | awk '{print $2/1024/1024/1024}')
+        FREE_SPACE=$(df -h / | awk 'NR==2 {print $4}' | sed 's/Gi//')
+    elif [[ "$PLATFORM" == "linux" ]]; then
+        # Linux checks
+        TOTAL_RAM=$(free -g | awk '/^Mem:/{print $2}')
+        FREE_SPACE=$(df -h / | awk 'NR==2 {print $4}' | sed 's/G//')
+    fi
+
+    if (( $(echo "$TOTAL_RAM < 4" | bc -l) )); then
+        echo -e "\n❌ ${RED}Minimum 4GB RAM required${NC}"
+        exit 1
+    fi
+
+    if (( $(echo "$FREE_SPACE < 2" | bc -l) )); then
+        echo -e "\n❌ ${RED}Minimum 2GB free disk space required${NC}"
+        exit 1
+    fi
+
+    echo -e "\n${GREEN}System Requirements:${NC}"
+    echo -e "  • RAM: ${SILVER}${TOTAL_RAM}GB${NC} / ${GREEN}4GB Required${NC}"
+    echo -e "  • Free Space: ${SILVER}${FREE_SPACE}GB${NC} / ${GREEN}2GB Required${NC}"
+    echo -e "  • Architecture: ${SILVER}$ARCH${NC}"
+    echo -e "  • Platform: ${SILVER}$PLATFORM${NC}\n"
+}
+
+# Add function to create app icon
+create_app_icon() {
+    echo -e "${SILVER}Creating application icon...${NC}"
+    
+    # Icon directories
+    if [[ "$PLATFORM" == "mac" ]]; then
+        # Create iconset directory
+        ICON_SET_DIR="$INSTALL_DIR/Cursor.iconset"
+        mkdir -p "$ICON_SET_DIR"
+        
+        # Download high resolution icon
+        ICON_URL="https://raw.githubusercontent.com/getcursor/cursor/main/packages/cursor/icons/png/512x512.png"
+        curl -sSL "$ICON_URL" -o "$ICON_SET_DIR/icon_512x512.png"
+        
+        # Create different icon sizes for macOS
+        for SIZE in 16 32 64 128 256 512; do
+            sips -z $SIZE $SIZE "$ICON_SET_DIR/icon_512x512.png" --out "$ICON_SET_DIR/icon_${SIZE}x${SIZE}.png"
+            sips -z $((SIZE*2)) $((SIZE*2)) "$ICON_SET_DIR/icon_512x512.png" --out "$ICON_SET_DIR/icon_${SIZE}x${SIZE}@2x.png"
+        done
+        
+        # Convert iconset to icns
+        iconutil -c icns "$ICON_SET_DIR" -o "$INSTALL_DIR/cursor.icns"
+        
+        # Set icon for the app
+        if [ -f "$INSTALL_DIR/cursor.icns" ]; then
+            cp "$INSTALL_DIR/cursor.icns" "$INSTALL_DIR/Cursor.app/Contents/Resources/electron.icns"
+            touch "$INSTALL_DIR/Cursor.app"  # Force icon refresh
+        fi
+        
+        # Cleanup
+        rm -rf "$ICON_SET_DIR"
+        
+    elif [[ "$PLATFORM" == "linux" ]]; then
+        # Linux icon setup (already handled in install_cursor function)
+        :
+    elif [[ "$PLATFORM" == "windows" ]]; then
+        # Windows icon setup (already handled in install_cursor function)
+        :
+    fi
+}
+
+# Installation function
+install_cursor() {
+    echo -e "\n${BLUE}╔══════════════════════════════╗${NC}"
+    echo -e "${BLUE}║   Installing Cursor v${PACKAGE_VERSION}   ║${NC}"
+    echo -e "${BLUE}╚══════════════════════════════╝${NC}\n"
+    
+    # Step 1: Create directories
+    echo -e "${SILVER}[1/4]${NC} Creating directories..."
+    mkdir -p "$INSTALL_DIR/bin" "$INSTALL_DIR/lib" "$INSTALL_DIR/share" || {
+        echo -e "\n❌ ${RED}Failed to create installation directories${NC}"
+        exit 1
+    }
+    echo -e "${GREEN}✓${NC} Directories created successfully\n"
+
+    # Step 2: Download and install platform-specific files
+    echo -e "${SILVER}[2/4]${NC} Downloading Cursor..."
+    if [[ $PLATFORM == "mac" ]]; then
+        if [[ $ARCH == "arm64" ]]; then
+            DOWNLOAD_URL="https://downloader.cursor.sh/builds/250207y6nbaw5qc/mac/installer/universal"
+            curl -L -o "$INSTALL_DIR/cursor.zip" "$DOWNLOAD_URL" --progress-bar || {
+                echo -e "\n❌ ${RED}Download failed${NC}"
+                exit 1
+            }
             
-            <h3>Finding Your Script's Location:</h3>
-            <ol>
-                <li>In Finder, locate your script file</li>
-                <li>Right-click on the file and select "Get Info" (or use ⌘ + I)</li>
-                <li>Look under the "Where:" section to find the full path</li>
-            </ol>
+            echo -e "${SILVER}[3/4]${NC} Extracting files..."
+            unzip -q "$INSTALL_DIR/cursor.zip" -d "$INSTALL_DIR" || {
+                echo -e "\n❌ ${RED}Extraction failed${NC}"
+                exit 1
+            }
+        else
+            echo -e "\n❌ ${RED}Intel Mac version must be downloaded manually${NC}"
+            exit 1
+        fi
+    elif [[ $PLATFORM == "linux" ]]; then
+        echo -e "\n${YELLOW}Linux support coming soon${NC}"
+        exit 1
+    elif [[ $PLATFORM == "windows" ]]; then
+        DOWNLOAD_URL="https://downloader.cursor.sh/builds/250103fqxdt5u9z/windows/nsis/x64"
+        curl -L -o "$INSTALL_DIR/cursor_setup.exe" "$DOWNLOAD_URL" --progress-bar
+    fi
+    echo -e "${GREEN}✓${NC} Download completed\n"
 
-            <p>Then use this command in Terminal, replacing the path with your actual script location:</p>
-            <pre><code>cd /path/to/directory</code></pre>
-            
-            <p><strong>Tip:</strong> You can also drag and drop the folder from Finder into Terminal after typing 'cd ' to automatically insert the path.</p>
-            
-            <img src="get pathway.png" alt="Guide to Get File Path on macOS" style="max-width: 100%; height: auto;">
+    # Step 3: Setup icons and shortcuts
+    echo -e "${SILVER}[4/4]${NC} Creating shortcuts and icons..."
+    
+    # Define icon URLs for different platforms
+    ICON_URL_PNG="https://raw.githubusercontent.com/getcursor/cursor/main/packages/cursor/icons/png/512x512.png"
+    ICON_URL_ICO="https://raw.githubusercontent.com/getcursor/cursor/main/packages/cursor/icons/win/cursor.ico"
+    
+    if [[ "$PLATFORM" == "linux" ]]; then
+        # Setup Linux icons
+        ICON_SIZES=("16" "32" "48" "64" "128" "256" "512")
+        for SIZE in "${ICON_SIZES[@]}"; do
+            ICON_DIR="$HOME/.local/share/icons/hicolor/${SIZE}x${SIZE}/apps"
+            mkdir -p "$ICON_DIR"
+            echo -e "${SILVER}Downloading ${SIZE}x${SIZE} icon...${NC}"
+            if ! curl -sSL "$ICON_URL_PNG" -o "$ICON_DIR/cursor.png"; then
+                echo -e "${YELLOW}Warning: Could not download ${SIZE}x${SIZE} icon${NC}"
+            fi
+        done
+        
+        # Create .desktop file
+        cat > "$HOME/.local/share/applications/cursor.desktop" << EOF
+[Desktop Entry]
+Name=Cursor AI
+Exec=$INSTALL_DIR/cursor
+Icon=cursor
+Type=Application
+Categories=Development;IDE;TextEditor;
+Comment=AI-first code editor
+StartupWMClass=Cursor
+Terminal=false
+MimeType=text/plain;text/x-python;text/x-java;text/x-javascript;text/html;text/css;
+EOF
+        chmod +x "$HOME/.local/share/applications/cursor.desktop"
+        
+        # Update icon cache
+        gtk-update-icon-cache -f -t "$HOME/.local/share/icons/hicolor" || true
+        
+    elif [[ "$PLATFORM" == "mac" ]]; then
+        # For macOS, create a symbolic link to Applications folder
+        ln -sf "$INSTALL_DIR/Cursor.app" "/Applications/Cursor.app"
+        
+        # Create command line tool symlink
+        ln -sf "$INSTALL_DIR/Cursor.app/Contents/MacOS/Cursor" "$BIN_DIR/cursor"
+        
+        # Refresh icon cache and Dock
+        touch "$INSTALL_DIR/Cursor.app"
+        touch "/Applications/Cursor.app"
+        killall Dock Finder >/dev/null 2>&1 || true
+        
+    elif [[ "$PLATFORM" == "windows" ]]; then
+        # For Windows, download the icon
+        ICON_DIR="$INSTALL_DIR/icons"
+        mkdir -p "$ICON_DIR"
+        
+        echo -e "${SILVER}Downloading Windows icon...${NC}"
+        if curl -sSL "$ICON_URL_ICO" -o "$ICON_DIR/cursor.ico"; then
+            # Create shortcut using PowerShell
+            powershell -Command "
+                \$WshShell = New-Object -comObject WScript.Shell
+                \$Shortcut = \$WshShell.CreateShortcut(\"\$Home\\Desktop\\Cursor AI.lnk\")
+                \$Shortcut.TargetPath = \"$INSTALL_DIR\\Cursor.exe\"
+                \$Shortcut.IconLocation = \"$ICON_DIR\\cursor.ico\"
+                \$Shortcut.Save()
+            "
+        else
+            echo -e "${YELLOW}Warning: Could not download Windows icon${NC}"
+        fi
+    fi
+    
+    echo -e "${GREEN}✓${NC} Shortcuts and icons setup completed\n"
+    
+    # Cleanup
+    rm -f "$INSTALL_DIR/cursor.zip"
+    rm -f "$INSTALL_DIR/cursor_setup.exe"
 
-            <h2>Step 3: Make Scripts Executable</h2>
-            <p>Before running the scripts, you need to make them executable. This is a one-time setup:</p>
-            <pre><code>chmod +x cursor-terminal-script
-chmod +x launcher</code></pre>
-            
-            <p><strong>Note:</strong> The <code>chmod +x</code> command gives the script permission to execute. You only need to do this once for each script.</p>
+    # After successful installation, create app icon
+    create_app_icon
+}
 
-            <h2>Step 4: Run the Launcher Script</h2>
-            <p>Execute the launcher script to start the process. This will open a new Terminal window and run the <code>cursor-terminal-script</code>:</p>
-            <pre><code>./launcher</code></pre>
-            <div class="note">
-                <p><strong>Note:</strong> If prompted, enter your Mac password. This is your user account password used to log in to your Mac.</p>
-            </div>
+# Uninstallation function
+uninstall_cursor() {
+    echo -e "\n${BLUE}╔══════════════════════════════╗${NC}"
+    echo -e "${BLUE}║   Uninstalling Cursor...     ║${NC}"
+    echo -e "${BLUE}╚══════════════════════════════╝${NC}"
+    
+    if [[ $PLATFORM == "mac" ]]; then
+        rm -rf "/Applications/Cursor.app"
+        rm -f "$BIN_DIR/cursor"
+    fi
+    
+    rm -rf "$INSTALL_DIR"
 
-            <h2>Step 5: Follow On-Screen Instructions</h2>
-            <p>Once the script is running, follow the on-screen instructions to complete the setup and installation process.</p>
+    # Clean up icons
+    if [[ "$PLATFORM" == "mac" ]]; then
+        rm -f "$INSTALL_DIR/cursor.icns"
+    elif [[ "$PLATFORM" == "linux" ]]; then
+        rm -rf "$HOME/.local/share/icons/hicolor/*/apps/cursor.png"
+    elif [[ "$PLATFORM" == "windows" ]]; then
+        rm -f "$INSTALL_DIR/icons/cursor.ico"
+    fi
 
-            <h2>Directory Structure</h2>
-            <div class="directory-container">
-                <pre><code>
-MacOS/
-│
-├── README.md                    # Project documentation and overview
-├── setup-instructions.html      # Detailed setup guide (you are here)
-├── cursor-terminal-script      # Main script for cursor management
-├── launcher                    # Script to launch the application
-├── assets/                     # Media and resource files
-│   ├── FISA.png               # FISA logo image
-│   └── CursorRUN.mov          # Demo video
-└── src/                       # Source code directory
-    └── (other source files)   # Additional implementation files
-        </code></pre>
-                <div class="description">
-                    <p><strong>📌 Quick Guide:</strong></p>
-                    <ul>
-                        <li class="folder-icon">MacOS: Root directory containing all project files</li>
-                        <li class="file-icon">cursor-terminal-script: The main executable for managing cursor settings</li>
-                        <li class="file-icon">launcher: Helper script to start the application</li>
-                        <li class="folder-icon">assets: Contains all media files needed for the application</li>
-                        <li class="folder-icon">src: Contains source code and implementation files</li>
-                    </ul>
-                </div>
-            </div>
+    echo -e "\n✅ ${GREEN}Uninstallation completed!${NC}"
+}
 
-            <h2>Additional Instructions</h2>
-            <div class="note">
-                <p><strong>Sign Up:</strong> Use a new Gmail account for signing up. Temporary emails may not work. You can purchase from FISAMY Shopee Store.</p>
-                <p><strong>Trial Limit:</strong> If you encounter a trial limit, revisit this terminal and start the process again.</p>
-            </div>
+# Define all functions before using them
+POST_INSTALL() {
+    echo -e "\n${BLUE}Installation Complete!${NC}"
+    echo -e "${BLUE}──────────────────${NC}"
+    echo -e "\n📝 ${GREEN}Post-Installation Steps:${NC}"
+    echo "• Launch Cursor"
+    echo "• Sign Up again using NEW Gmail Account, temporary mail may not always work. You can purchase from FISAMY Shopee Store"
+    echo "• If there Trial Limit , you can revisit this Terminal and start again the process"
+}
 
-            <h2>Troubleshooting</h2>
-            <div class="note">
-                <p>If you encounter any issues, ensure that you have the necessary permissions and that your system meets the requirements specified in the script.</p>
-            </div>
+run_id_modifier() {
+    echo -e "\n${BLUE}Resetting Cursor AI...${NC}"
+    echo -e "${BLUE}──────────────────${NC}"
+    if [[ $PLATFORM == "mac" ]]; then
+        echo -e "\n📝 ${GREEN}Applying macOS configuration...${NC}"
+        curl -fsSL https://raw.githubusercontent.com/yuaotian/go-cursor-help/refs/heads/master/scripts/run/cursor_mac_id_modifier.sh | sudo bash
+    else
+        echo -e "\n📝 ${GREEN}Applying Windows configuration...${NC}"
+        powershell -Command "irm https://raw.githubusercontent.com/yuaotian/go-cursor-help/refs/heads/master/scripts/run/cursor_win_id_modifier.ps1 | iex"
+    fi
+}
 
-            <p>For further assistance, refer to the <code>README.md</code> file or contact support.</p>
+# Main script execution
+main() {
+    case "$1" in
+        install)
+            check_system
+            check_requirements
+            install_cursor
+            run_id_modifier
+            POST_INSTALL
+            ;;
+        uninstall)
+            check_system
+            uninstall_cursor
+            ;;
+        *)
+            main_menu
+            ;;
+    esac
+}
 
-            <div class="video-container">
-                <video controls width="600">
-                    <source src="CursorRUN.mov" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-        </div>
-    </div>
-</body>
-</html> 
+# Version compatibility check
+CURSOR_VERSION="0.44.11"
+echo -e "\n${BLUE}╔══════════════════════════════╗${NC}"
+echo -e "${BLUE}║   Version Compatibility      ║${NC}"
+echo -e "${BLUE}╚══════════════════════════════╝${NC}"
+echo -e "\n✅ ${GREEN}Installing Cursor v${CURSOR_VERSION}${NC}"
+echo -e "❌ ${RED}Cursor v0.45.x and above are not supported${NC}"
+
+# License check
+echo -e "\n${BLUE}╔══════════════════════════════╗${NC}"
+echo -e "${BLUE}║   License Requirements       ║${NC}"
+echo -e "${BLUE}╚══════════════════════════════╝${NC}"
+echo "• Sign Up again using NEW Gmail Account, temporary mail may not always work. You can purchase from FISAMY Shopee Store"
+echo "• If there Trial Limit , you can revisit this Terminal and start again the process"
+
+# Logging
+log "Starting installation process"
+log "Platform: $PLATFORM, Architecture: $ARCH"
+log "Installation directory: $INSTALL_DIR"
+
+# Start the application
+main_menu
